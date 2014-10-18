@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>background</title>
+	<script>
+		var gui = require('nw.gui');
+		var win = gui.Window.get();
+		
+		var doQuit = function()
+		{
+			gui.App.quit();
+		}
+		
+		var doNotification = function(msg_title, msg_body)
+		{
+			var n = new Notification(msg_title, {
+				'icon': 'eye_83x83.png',
+				'body': msg_body
+			});
+			n.addEventListener('click', function(){
+				win.show();
+			});
+		}
+		
+		var tray = new gui.Tray({
+			title: 'Tray',
+			icon: 'eye_83x83.png'
+		});
+
+		var menu = new gui.Menu();
+		menu.append(new gui.MenuItem({
+			type: 'normal',
+			label: 'Quit',
+			click: function(){
+				doQuit();
+			}
+		}));
+		var menu_item_notification = new gui.MenuItem({
+			type: 'normal',
+			label: 'Notification'
+		});
+		menu_item_notification.on('click', function(){
+			doNotification('from menu', 'Hello World');
+		});
+		menu.append(menu_item_notification);
+		tray.menu = menu;
+		
+		tray.on('click', function(){
+			//win.minimize();
+			win.hide();
+			//win.close();
+		});
+		
+	</script>
+  </head>
+  <body>
+	<header style="-webkit-app-region: drag; background-color: #eee;">background, tray, menu, notifications</header>
+	<section>
+		hello world (selected)
+	</section>
+	<section style="-webkit-user-select: none;">
+		this is a non-selected content
+	</section>
+  </body>
+</html>
